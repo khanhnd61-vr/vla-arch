@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VLA Arch</title>
+  <meta name="description" content="Block diagrams of every vision-language-action policy served by vla.cpp and vla.simd, drawn from the engines' C++ forward passes: layer counts, widths, token counts, attention masks and denoising loops." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="VLA Arch: block diagrams of the vla.cpp and vla.simd policies" />
+  <meta property="og:description" content="How each VLA policy is wired, drawn from the C++ forward passes that run it." />
+  <meta property="og:type" content="website" />
+
+  <!-- Icons (from the main site) -->
+  <link rel="icon" href="assets/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="assets/havi-pixel.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <a class="skip" href="#models">Skip to the models</a>
+
+  <!-- ===== Header / Nav ===== -->
+  <header class="site-header" id="top">
+    <nav class="nav container">
+      <a class="brand" href="#top" aria-label="VLA Arch, back to top">
+        <img class="brand__icon" src="assets/havi-pixel.png" alt="" width="40" height="40" />
+        <span class="brand__name">VLA Arch</span>
+      </a>
+      <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="#archetypes">Archetypes</a></li>
+        <li><a href="#compare">Compare</a></li>
+        <li><a href="#models">Models</a></li>
+        <li><a class="nav__cta" href="https://havi.fit/">Havilab ↗</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ===== Hero ===== -->
+    <section class="hero container">
+      <div class="hero__text">
+        <p class="eyebrow">VLA architecture atlas</p>
+        <h1 class="hero__title">How every policy in <span class="eng">vla.cpp</span> and <span class="eng accent">vla.simd</span> is wired.</h1>
+        <p class="hero__lede">
+          Block diagrams of the vision-language-action policies the two engines serve, drawn from their
+          C++ forward passes rather than from the papers. Layer counts, widths and token counts are the
+          ones the engines actually run, and each figure marks what is computed once per observation and
+          what repeats on every denoising step.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#models">Browse models</a>
+          <a class="btn btn--ghost" href="#archetypes">Start with archetypes</a>
+        </div>
+      </div>
+      <div class="hero__stats">
+        <div class="stat stat--main"><span class="stat__value" data-count="models">-</span><span class="stat__label">policies</span></div>
+        <div class="stat"><span class="stat__value" data-count="cpp">-</span><span class="stat__label">in vla.cpp</span></div>
+        <div class="stat"><span class="stat__value" data-count="simd">-</span><span class="stat__label">in vla.simd</span></div>
+        <p class="hero__note">
+          <a class="accent" href="https://github.com/VinRobotics/vla.cpp" target="_blank" rel="noopener">vla.cpp</a> runs them on GPUs, NPUs and CPUs through ggml;
+          <a class="accent" href="https://github.com/cair-vinuni/vla.simd" target="_blank" rel="noopener">vla.simd</a> runs them on CPU-only robots with hand-written SIMD kernels.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Archetypes ===== -->
+    <section class="section section--alt" id="archetypes">
+      <div class="container">
+        <header class="section__head">
+          <span class="section__kicker">// archetypes</span>
+          <h2>Where the policies differ: how the action head reads the scene</h2>
+          <p class="section__sub">
+            Every policy here turns cameras, an instruction and the robot's joint state into a chunk of future
+            actions. They differ mostly in one connection: the path from the perception backbone into the
+            action head. That connection is what makes some heads cheap to iterate and others free.
+          </p>
+        </header>
+        <div class="legend" data-legend></div>
+        <div class="types" data-types></div>
+      </div>
+    </section>
+
+    <!-- ===== Compare ===== -->
+    <section class="section" id="compare">
+      <div class="container">
+        <header class="section__head">
+          <span class="section__kicker">// compare</span>
+          <h2>All policies side by side</h2>
+          <p class="section__sub">Configurations of the checkpoints the engines ship with. Chunk is horizon × action dimension as emitted by the head, before any padding is stripped.</p>
+        </header>
+        <div class="table-wrap">
+          <table class="cmp">
+            <thead><tr><th>Model</th><th>Engine</th><th>Vision</th><th>Language / backbone</th><th>Action head</th><th>Decoding</th><th>Chunk</th></tr></thead>
+            <tbody data-compare></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Models ===== -->
+    <section class="section section--alt" id="models">
+      <div class="container">
+        <header class="section__head">
+          <span class="section__kicker">// models</span>
+          <h2>Model by model</h2>
+          <p class="section__sub">Each figure follows one inference call left to right. Open the specification under a figure for the layer-level numbers.</p>
+        </header>
+        <nav class="picker" aria-label="Models">
+          <div class="picker__filter" role="group" aria-label="Engine">
+            <button type="button" class="is-active" data-filter="all" aria-pressed="true">all</button>
+            <button type="button" data-filter="cpp" aria-pressed="false">vla.cpp</button>
+            <button type="button" data-filter="simd" aria-pressed="false">vla.simd</button>
+          </div>
+          <div class="picker__groups" data-side></div>
+        </nav>
+        <div class="models" data-models></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container footer__inner">
+      <img class="footer__icon" src="assets/havi-pixel.png" alt="" width="32" height="32" />
+      <p>© <span id="year"></span> Khanh D. Nguyen. Part of <a href="https://havi.fit/">Havilab</a>. Keep committing and pushing.</p>
+    </div>
+  </footer>
+
+  <script src="data/archetypes.js"></script>
+  <script src="data/flow.js"></script>
+  <script src="data/dit.js"></script>
+  <script src="data/parallel.js"></script>
+  <script src="data/readout.js"></script>
+  <script src="data/query.js"></script>
+  <script src="data/unet.js"></script>
+  <script src="assets/arch.js"></script>
+</body>
+</html>
