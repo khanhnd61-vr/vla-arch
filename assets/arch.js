@@ -10,6 +10,33 @@
   const ENGINES = { cpp: 'vla.cpp', simd: 'vla.simd' };
   let uidSeq = 0;
 
+  // GitHub issues, pre-filled: a fix for a diagram, or a request for a new one
+  const ISSUES = 'https://github.com/khanhnd61-vr/vla-arch/issues/new';
+  const PAGE = /^https?:$/.test(location.protocol) ? location.origin + location.pathname : 'https://havi.fit/vla-arch/';
+  const issueUrl = (title, body) => `${ISSUES}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+  const fixIssue = (m) => issueUrl(
+    m ? `[Fix] ${m.name}: ` : '[Fix] ',
+    [
+      `**Model:** ${m ? `${m.name} (${PAGE}#${m.id})` : ''}`,
+      '**Where:** main diagram / secondary figure / layer-level specification / notes',
+      '',
+      '**What looks wrong**',
+      '',
+      '',
+      '**What it should be** (a source file and line, a config value or a paper section helps)',
+      '',
+    ].join('\n'),
+  );
+  const requestIssue = () => issueUrl('[Request] Illustrate ', [
+    '**Model:** ',
+    '**Paper or project page:** ',
+    '**Code or checkpoint:** ',
+    '**Runs in:** vla.cpp / vla.simd / neither yet',
+    '',
+    '**Why it would be useful**',
+    '',
+  ].join('\n'));
+
   const svgEl = (tag, attrs = {}, parent) => {
     const n = document.createElementNS(NS, tag);
     for (const [k, v] of Object.entries(attrs)) if (v !== undefined && v !== null) n.setAttribute(k, v);
@@ -535,13 +562,19 @@
       sec.appendChild(notes);
     }
 
+    const foot = h('div', { class: 'model__foot' });
     if (m.src) {
       const p = h('p', { class: 'src' });
       p.innerHTML = Object.entries(m.src).map(([e, files]) => `<span>${ENGINES[e]}</span>${files.map((f) => `<code>${esc(f)}</code>`).join('')}`).join('');
-      sec.appendChild(p);
+      foot.appendChild(p);
     }
+    foot.appendChild(h('a', { class: 'model__report', href: fixIssue(m), target: '_blank', rel: 'noopener' }, `Report an issue with ${esc(m.name)} ↗`));
+    sec.appendChild(foot);
     return sec;
   }
+
+  document.querySelectorAll('[data-issue="fix"]').forEach((a) => { a.href = fixIssue(null); });
+  document.querySelectorAll('[data-issue="request"]').forEach((a) => { a.href = requestIssue(); });
 
   // Engine filter
   const filterBtns = document.querySelectorAll('[data-filter]');

@@ -343,6 +343,28 @@ a.chip:hover { background: var(--support); color: var(--cream); }
 .src span { font-family: var(--font-mono); font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; color: var(--support); }
 .src code { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; font-size: .72rem; overflow-wrap: anywhere; }
 
+/* Per-model footer: source files on the left, report button on the right */
+.model__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: 14px; }
+.model__foot .src { margin: 0; flex: 1 1 320px; }
+.model__report {
+  flex: none; font-family: var(--font-mono); font-size: .74rem; font-weight: 500; color: var(--primary);
+  padding: 5px 12px; border: 1px solid var(--secondary); border-radius: 999px; background: var(--paper);
+  transition: background .18s ease, color .18s ease;
+}
+.model__report:hover { background: var(--secondary); }
+.model__report:focus-visible, .ask .btn:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+
+/* ---------- Contribute ---------- */
+.asks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.ask {
+  background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px 24px; display: grid; gap: 10px; align-content: start; box-shadow: var(--shadow);
+}
+.ask__n { font-family: var(--font-mono); font-size: .76rem; color: var(--support); }
+.ask h3 { margin: 0; font-size: 1.2rem; color: var(--primary); }
+.ask p { margin: 0; color: var(--ink-soft); font-size: .95rem; }
+.ask .btn { justify-self: start; margin-top: 8px; }
+
 /* ---------- Footer ---------- */
 .site-footer { border-top: 1px solid var(--line); padding: 28px 0; background: var(--cream); }
 .footer__inner { display: flex; align-items: center; gap: 14px; justify-content: center; text-align: center; flex-wrap: wrap; }
@@ -379,6 +401,8 @@ a.chip:hover { background: var(--support); color: var(--cream); }
 @media (max-width: 600px) {
   .container { width: auto; margin-inline: 16px; }
   .types { grid-template-columns: 1fr; }
+  .asks { grid-template-columns: 1fr; }
+  .model__report { white-space: normal; }
   .model { padding: 18px 16px 16px; }
   .model__head { grid-template-columns: 1fr; }
   .model__head .eng-tags { justify-content: flex-start; padding-top: 0; }
