@@ -3,7 +3,7 @@
 Block diagrams of every vision-language-action policy served by
 [vla.cpp](https://github.com/VinRobotics/vla.cpp) and
 [vla.simd](https://github.com/cair-vinuni/vla.simd), drawn from the engines' C++
-forward passes. It uses the theme of the main site ([havi.fit](https://havi.fit/)).
+forward passes. It uses the theme of the main site ([khanhnd61-vr.github.io](https://khanhnd61-vr.github.io/)).
 There is no build step: open `index.html`, or serve the folder with any static server.
 
 ```bash

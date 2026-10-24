@@ -12,7 +12,7 @@
 
   // GitHub issues, pre-filled: a fix for a diagram, or a request for a new one
   const ISSUES = 'https://github.com/khanhnd61-vr/vla-arch/issues/new';
-  const PAGE = /^https?:$/.test(location.protocol) ? location.origin + location.pathname : 'https://havi.fit/vla-arch/';
+  const PAGE = /^https?:$/.test(location.protocol) ? location.origin + location.pathname : 'https://khanhnd61-vr.github.io/vla-arch/';
   const issueUrl = (title, body) => `${ISSUES}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
   const fixIssue = (m) => issueUrl(
     m ? `[Fix] ${m.name}: ` : '[Fix] ',
